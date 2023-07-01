@@ -30,7 +30,7 @@ public class BookController {
 
     @Autowired
     private BookTypeService bookTypeService;
-
+    //ok
     @Autowired
     private BookService bookService;
 
