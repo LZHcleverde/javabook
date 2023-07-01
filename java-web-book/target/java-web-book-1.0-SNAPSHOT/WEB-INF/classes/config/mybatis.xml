@@ -1,0 +1,26 @@
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+
+    <!-- 查询结果集的一个返回类型   取别名-->
+    <typeAliases>
+        <package name="com.augmentum.domain"/>
+    </typeAliases>
+
+    <!--    分页配置拦截器-->
+    <plugins>
+        <!--设置分页插件-->
+        <plugin interceptor="com.github.pagehelper.PageInterceptor"></plugin>
+    </plugins>
+
+
+    <mappers>
+        <package name="com.augmentum.dao"/>
+    </mappers>
+
+
+
+
+
+
+</configuration>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.augmentum.dao.OrderDao">
+
+
+<!--boolean addOrder(Order order);-->
+    <insert id="addOrder">
+        insert into `order`(o_id,o_total,o_amount,o_status,o_paytype,u_id,o_realname,o_phone,o_address)
+        values (#{oid},#{ototal},#{oamount},#{ostatus},#{opaytype},#{uid},#{orealname},#{ophone},#{oaddress})
+    </insert>
+
+
+
+<!--    void addOrderItem(OrderItem item);-->
+    <insert id="addOrderItem">
+        insert into orderitem(oi_price,oi_amount,b_id,o_id)
+        values (#{oiprice},#{oiamount},#{bid},#{oid})
+    </insert>
+
+
+<!--    List<Order> queryOrderByUid(Integer uid);-->
+    <select id="queryOrderByUid" resultType="com.augmentum.domain.Order">
+        select o_id oid,o_total ototal,o_amount oamount,o_status ostatus,o_paytype opaytype,u_id uid,o_datetime odatetime,o_realname orealname,o_phone ophone,o_address oaddress
+        from `order`
+        <if test="uid != null">
+            where u_id = #{uid}
+        </if>
+
+    </select>
+
+
+
+    <!--    List<OrderItem> queryOrderItembyOid(String oid);-->
+    <select id="queryOrderItembyOid" resultType="com.augmentum.domain.OrderItem">
+        select oi_id oiid,oi_price oiprice,oi_amount oiamount,b_id bid,o_id oid
+        from orderitem
+        where o_id = #{oid}
+    </select>
+
+
+<!--    List<Order> queryOrderByostatus(@Param("ostatus") int ostatus);-->
+    <select id="queryOrderByostatus" resultType="com.augmentum.domain.Order">
+        select o_id oid,o_total ototal,o_amount oamount,o_status ostatus,o_paytype opaytype,u_id uid,o_datetime odatetime,o_realname orealname,o_phone ophone,o_address oaddress
+        from `order`
+        <if test="ostatus != 1">
+            where o_status = #{ostatus}
+        </if>
+
+    </select>
+
+<!--void deleteOBook(@Param("oid") String oid);-->
+    <delete id="deleteOBook">
+        delete from orderitem where o_id = #{oid}
+    </delete>
+
+
+<!--    void deleteOrder(String oid);-->
+    <delete id="deleteOrder">
+        delete from `order` where o_id = #{oid}
+    </delete>
+
+</mapper>
+
+
+

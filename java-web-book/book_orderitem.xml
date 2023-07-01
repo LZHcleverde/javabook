@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+  <table-set>
+    <table path="bookshop.orderitem">
+      <table path="bookshop.book" from="b_id" to="b_id"/>
+      <table path="bookshop.order" from="o_id" to="o_id"/>
+    </table>
+
+    <table path="bookshop.order">
+      <table path="bookshop.user" from="u_id" to="u_id"/>
+    </table>
+
+    <table path="bookshop.recommend">
+      <table path="bookshop.book" from="=b_id" to="b_id"/>
+    </table>
+
+  </table-set>
+</data>

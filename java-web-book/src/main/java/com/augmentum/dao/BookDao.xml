@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.augmentum.dao.BookDao">
+
+<!--List<Book> queryBooksAll();-->
+    <select id="queryBooksAll" resultType="com.augmentum.domain.Book">
+        select b_id bid,b_name bname,b_cover bcover,b_price bprice
+        from book
+        order by bid
+    </select>
+
+
+<!--    List<Book> queryBooksListById(int btid);-->
+    <select id="queryBooksListById" resultType="com.augmentum.domain.Book">
+        select b_id bid,b_name bname,b_cover bcover,b_price bprice
+        from book
+        where book.bt_id = #{btid}
+        order by bid
+    </select>
+
+
+<!--    Book queryBookBybid(int bid);-->
+    <select id="queryBookBybid" resultType="com.augmentum.domain.Book">
+        select b_id bid,b_isbn bisbn,b_name bname,b_author bauthor,b_publisher bpublisher,
+               b_cover bcover,b_image1 bimage1,b_image2 bimage2,b_price bprice,bt_id btid,b_stock bstock,b_mark bmark
+        from book
+        where b_id = #{bid}
+    </select>
+
+
+
+<!--    List<Book> searchBooksByKeyword(String keyword);-->
+    <select id="searchBooksByKeyword" resultType="com.augmentum.domain.Book">
+        select b_id bid,b_name bname,b_author bauthor,b_publisher bpublisher,b_cover bcover,b_price bprice,bt_id btid,b_stock bstock,b_mark bmark
+        from book
+            <where>
+                b_name like CONCAT('%',#{keyword},'%')
+            </where>
+    </select>
+
+
+
+<!--    List<Book> queryBooksByRtype(@Param("rtype") int rtype);-->
+    <select id="queryBooksByRtype" resultType="com.augmentum.domain.Book">
+        select book.b_id bid,b_isbn bisbn,b_name bname,b_author bauthor,b_publisher bpublisher,
+               b_cover bcover,b_image1 bimage1,b_image2 bimage2,b_price bprice,bt_id btid,b_stock bstock,b_mark bmark
+        from book
+        <if test="rtype != 0">
+            ,recommend
+            where book.b_id = recommend.b_id and recommend.r_type = #{rtype}
+        </if>
+    </select>
+
+
+<!--BookType queryBookTypeName(@Param("bid") Integer bid, @Param("btid") Integer btid);-->
+    <select id="queryBookTypeName" resultType="com.augmentum.domain.BookType">
+        select bt.bt_name btname
+        from `booktype` bt,book b
+        where bt.bt_id = b.bt_id and b.b_id = #{bid} and b.bt_id = #{btid}
+    </select>
+
+
+
+<!--    int queryBooksrtypeByBid(@Param("bid") Integer bid);-->
+    <select id="queryBooksrtypeByBid" resultType="com.augmentum.domain.Recommend">
+        select r_type rtype from recommend where b_id = #{bid}
+    </select>
+
+
+
+<!--    void insertBookrtypeById(@Param("bid") int bid,@Param("rtype") int rtype);-->
+    <insert id="insertBookrtypeById">
+        insert into recommend(r_type,b_id) values (#{rtype},#{bid})
+    </insert>
+
+
+<!--    void deleteBookrtypeById(@Param("bid") int bid,@Param("rtype") int rtype);-->
+    <delete id="deleteBookrtypeById">
+        delete from recommend where b_id = #{bid} and r_type = #{rtype}
+    </delete>
+
+<!--    int querybookrecommentBeing(@Param("bid") int bid);-->
+    <select id="querybookrecommentBeing" resultType="int">
+        select count(*) from recommend where b_id = #{bid}
+    </select>
+
+
+<!--    void updatebookrecommend(@Param("bid") int bid, @Param("rtype") int rtype);-->
+    <update id="updatebookrecommend">
+        update recommend set r_type = #{rtype} where b_id = #{bid}
+    </update>
+
+<!--    void addBook(Book b);-->
+    <insert id="addBook">
+        insert into book(b_isbn,b_name,b_author,b_publisher,b_cover,b_image1,b_image2,b_price,bt_id,b_stock,b_mark)
+        values (#{bisbn},#{bname},#{bauthor},#{bpublisher},#{bcover},#{bimage1},#{bimage2},#{bprice},#{btid},#{bstock},#{bmark})
+    </insert>
+
+
+<!--    void updateBook(Book b);-->
+    <update id="updateBook">
+        update book set b_isbn = #{bisbn},b_name = #{bname},b_author = #{bauthor},
+                        b_publisher = #{bpublisher},b_cover = #{bcover},b_image1 = #{bimage1},b_image2 = #{bimage2},
+                        b_price = #{bprice},bt_id = #{btid},b_stock = #{bstock},b_mark = #{bmark}
+            where b_id = #{bid}
+    </update>
+
+
+<!--    void deleteBook(int bid);-->
+    <delete id="deleteBook">
+        delete from book where b_id = #{bid}
+    </delete>
+
+
+<!--    void deleteBookrtypeByid(@Param("bid") int bid);-->
+    <delete id="deleteBookrtypeByid">
+        delete from recommend where b_id = #{bid}
+    </delete>
+
+
+<!--    int updateOrderOstatusByOid(String oid, Integer ostatus);-->
+    <update id="updateOrderOstatusByOid">
+        update `order` set o_status = #{ostatus} where o_id = #{oid}
+    </update>
+</mapper>

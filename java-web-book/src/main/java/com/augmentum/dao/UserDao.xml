@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.augmentum.dao.UserDao">
+
+
+<!--int identify(String uname);-->
+    <select id="identify" resultType="int">
+        select count(*) from user where u_name = #{uname}
+    </select>
+
+
+<!--    boolean addUser(User user);-->
+    <insert id="addUser">
+        insert into user(u_name,u_pwd,u_realname,u_role,u_mark,u_phone,u_address)
+        values (#{uname},#{upwd},#{urealname},#{urole},#{umark},#{uphone},#{uaddress})
+    </insert>
+
+
+
+<!--    User login(String uname);-->
+    <select id="login" resultType="com.augmentum.domain.User">
+        select u_id uid,u_name uname,u_pwd upwd,u_realname urealname,u_phone uphone,u_address uaddress from user where u_name = #{uname}
+    </select>
+
+
+<!--User updatePhoneAddress(User user);-->
+    <update id="updatePhoneAddress">
+        update user set u_phone = #{uphone},u_address = #{uaddress} where u_id = #{uid}
+    </update>
+
+
+
+<!--    String queryUpwd(@Param("uid") String uid);-->
+    <select id="queryUpwd" resultType="String">
+        select u_pwd from user where u_id = #{uid}
+    </select>
+
+
+<!--    void updatePassword(String encrypt);-->
+    <update id="updatePassword">
+        update user set u_pwd = #{upwd} where u_id = #{uid}
+    </update>
+
+
+
+<!--    List<User> queryUserListAll();-->
+    <select id="queryUserListAll" resultType="com.augmentum.domain.User">
+        select u_id uid,u_name uname,u_realname urealname,u_redgt uredgt,u_role urole,u_mark umark,u_phone uphone,u_address uaddress
+        from `user`
+    </select>
+
+
+<!--    User queryUserByUid(@Param("uid") int uid);-->
+    <select id="queryUserByUid" resultType="com.augmentum.domain.User">
+        select u_id uid,u_name uname,u_realname urealname,u_phone uphone,u_address uaddress
+        from `user`
+        where u_id = #{uid}
+    </select>
+
+
+<!--    void updateUserByUid(int uid, String uphone, String uaddress); -->
+    <update id="updateUserByUid">
+        update user set u_phone = #{uphone},u_address = #{uaddress} where u_id = #{uid}
+    </update>
+
+
+<!--    List<Order> selectOidByUid(@Param("uid") int uid);-->
+     <select id="selectOidByUid" resultType="com.augmentum.domain.Order">
+         select o_id oid from `order` where u_id = #{uid}
+     </select>
+
+
+<!--    List<OrderItem> selectOiidByOid(@Param("oid") String oid);-->
+    <select id="selectOiidByOid" resultType="com.augmentum.domain.OrderItem">
+        select oi_id oiid from orderitem where o_id = #{oid}
+    </select>
+
+
+<!--    void deleteOrderByOid(@Param("oid") String oid);-->
+    <delete id="deleteOrderByOid">
+        delete from `order` where o_id = #{oid}
+    </delete>
+
+
+<!--    void deleteOrderItemByOiid(@Param("oiid") Integer oiid);-->
+    <delete id="deleteOrderItemByOiid">
+        delete from `orderitem` where oi_id = #{oiid}
+    </delete>
+
+
+<!--    void deleteUserByUid(@Param("uid") int uid);-->
+    <delete id="deleteUserByUid">
+        delete from `user` where u_id = #{uid}
+    </delete>
+
+</mapper>
