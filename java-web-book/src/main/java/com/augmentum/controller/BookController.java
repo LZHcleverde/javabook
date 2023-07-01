@@ -31,6 +31,7 @@ public class BookController {
     @Autowired
     private BookTypeService bookTypeService;
     //ok
+    //这个代码Git上去
     @Autowired
     private BookService bookService;
 
